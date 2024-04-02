@@ -1,13 +1,31 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../assets/Providers/AuthProvider";
 
 const Login = () => {
+  const { userLogin, forgotPass } = useContext(AuthContext);
+  const emailRef = useRef();
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    userLogin(email, password)
+      .then((res) => console.log(res.user))
+      .catch((err) => console.log(err));
+  };
+
+  const handleForgotPass = () => {
+    const email = emailRef.current.value;
+    forgotPass(email)
+      .then(() => console.log("check your email"))
+      .catch((err) => console.log(err));
+  };
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col ">
         <h1 className="font-bold text-4xl">Login Now</h1>
         <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-          <form className="card-body">
+          <form onSubmit={handleLogin} className="card-body">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -15,6 +33,8 @@ const Login = () => {
               <input
                 type="email"
                 placeholder="email"
+                name="email"
+                ref={emailRef}
                 className="input input-bordered"
                 required
               />
@@ -26,11 +46,16 @@ const Login = () => {
               <input
                 type="password"
                 placeholder="password"
+                name="password"
                 className="input input-bordered"
                 required
               />
               <label className="label">
-                <a href="#" className="label-text-alt link link-hover">
+                <a
+                  onClick={handleForgotPass}
+                  href="#"
+                  className="label-text-alt link link-hover"
+                >
                   Forgot password?
                 </a>
               </label>
