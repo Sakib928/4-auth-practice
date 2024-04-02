@@ -1,17 +1,21 @@
 import { useContext } from "react";
 import { AuthContext } from "../assets/Providers/AuthProvider";
-import { auth } from "../firebase/firebase.config";
 import { Link } from "react-router-dom";
+import { updateProfile } from "firebase/auth";
 
 const Register = () => {
   const { createUser } = useContext(AuthContext);
   const handleRegister = (e) => {
     e.preventDefault();
+    const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
-    // console.log(email, password);
     createUser(email, password)
-      .then((res) => console.log(res.user))
+      .then((res) => {
+        updateProfile(res.user, { displayName: name })
+          .then(() => console.log(res.user))
+          .catch((err) => console.log(err));
+      })
       .catch((err) => console.log(err));
   };
 
@@ -21,6 +25,18 @@ const Register = () => {
         <h1 className="font-bold text-4xl">Register Now</h1>
         <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <form onSubmit={handleRegister} className="card-body">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Name</span>
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="name"
+                className="input input-bordered"
+                required
+              />
+            </div>
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
