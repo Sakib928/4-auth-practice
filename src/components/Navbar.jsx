@@ -3,15 +3,18 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../assets/Providers/AuthProvider";
 
 const Navbar = () => {
-  const { user } = useContext(AuthContext);
+  const { user, userLogout } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    userLogout()
+      .then(() => "logout successful")
+      .catch((err) => console.log(err));
+  };
+
   const navLinks = (
     <>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
-      <li>
-        <Link to="/profile">Profile</Link>
-      </li>
+      <li>{user && <Link to="/">Home</Link>}</li>
+      <li>{user && <Link to="/profile">Profile</Link>}</li>
       <li>
         <Link to="/login">Login</Link>
       </li>
@@ -58,7 +61,11 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         {user && <p>{user.email}</p>}
-        {user && <a className="btn">Log Out </a>}
+        {user && (
+          <a onClick={handleLogout} className="btn">
+            Log Out{" "}
+          </a>
+        )}
       </div>
     </div>
   );

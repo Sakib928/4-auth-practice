@@ -1,9 +1,11 @@
 import { useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../assets/Providers/AuthProvider";
+import { FaGoogle, FaGithub } from "react-icons/fa";
 
 const Login = () => {
-  const { userLogin, forgotPass } = useContext(AuthContext);
+  const { userLogin, forgotPass, googleLogin, githubLogin } =
+    useContext(AuthContext);
   const emailRef = useRef();
   const handleLogin = (e) => {
     e.preventDefault();
@@ -18,6 +20,18 @@ const Login = () => {
     const email = emailRef.current.value;
     forgotPass(email)
       .then(() => console.log("check your email"))
+      .catch((err) => console.log(err));
+  };
+
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((res) => console.log(res.user))
+      .catch((err) => console.log(err));
+  };
+
+  const handleGithubLogin = () => {
+    githubLogin()
+      .then((res) => console.log(res.user))
       .catch((err) => console.log(err));
   };
   return (
@@ -63,8 +77,22 @@ const Login = () => {
             <div className="form-control mt-6">
               <button className="btn btn-primary">Login</button>
             </div>
+            <div className="mt-4 flex">
+              <p
+                onClick={handleGoogleLogin}
+                className="flex place-items-center gap-3 btn btn-ghost"
+              >
+                <FaGoogle></FaGoogle>Google
+              </p>
+              <p
+                onClick={handleGithubLogin}
+                className="flex place-items-center gap-3 btn btn-ghost"
+              >
+                <FaGithub></FaGithub>Github
+              </p>
+            </div>
           </form>
-          <p className="p-4">
+          <p className="p-4 -mt-10">
             New Here ? Register{" "}
             <Link className="text-blue-600 underline" to="/register">
               here
