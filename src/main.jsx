@@ -10,37 +10,58 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Register from "./components/Register";
 import PrivateRoute from "./components/PrivateRoute";
+import { HelmetProvider } from "react-helmet-async";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root></Root>,
+    element: (
+      <HelmetProvider>
+        <Root></Root>
+      </HelmetProvider>
+    ),
     children: [
       {
         path: "/",
-        element: <Home></Home>,
+        element: (
+          <HelmetProvider>
+            <Home></Home>
+          </HelmetProvider>
+        ),
       },
       {
         path: "/profile",
         element: (
-          <PrivateRoute>
-            <Profile></Profile>
-          </PrivateRoute>
+          <HelmetProvider>
+            <PrivateRoute>
+              <Profile></Profile>
+            </PrivateRoute>
+          </HelmetProvider>
         ),
       },
       {
         path: "/login",
-        element: <Login></Login>,
+        element: (
+          <HelmetProvider>
+            <Login></Login>
+          </HelmetProvider>
+        ),
       },
       {
         path: "/register",
-        element: <Register></Register>,
+        element: (
+          <HelmetProvider>
+            <Register></Register>
+          </HelmetProvider>
+        ),
       },
       {
         path: "/dashboard",
         element: (
-          <PrivateRoute>
-            <Dashboard></Dashboard>
-          </PrivateRoute>
+          <HelmetProvider>
+            <PrivateRoute>
+              <Dashboard></Dashboard>
+            </PrivateRoute>
+          </HelmetProvider>
         ),
       },
     ],
